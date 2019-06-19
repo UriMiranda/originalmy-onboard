@@ -1,118 +1,133 @@
-.omy-dialog {
-  *,
-  ::after,
-  ::before {
-    box-sizing: border-box;
-    font-family: "Open Sans", sans-serif;
-  }
-}
+$green: #4abdac;
+$orange: #f6921e;
+
 .omy-dialog {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1050;
-//   display: block;
-    display: none;
+  //   display: block;
+  display: none;
   width: 100%;
   height: 100%;
   overflow: hidden;
   outline: 0;
   transition: opacity 0.15s linear;
   background-color: rgba(0, 0, 0, 0.5);
-}
 
-.omy-dialog-backdrop {
-  position: relative;
-  width: auto;
-  margin: 0.5rem;
-  pointer-events: none;
-}
-
-.omy-dialog-open {
-  // Kill the scroll on the body
-  overflow: hidden;
-
-  .omy-dialog {
-    overflow-x: hidden;
-    overflow-y: auto;
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
   }
-}
 
-@media (min-width: 1200px) {
-  .modal-xl {
-    max-width: 1140px;
+  &.show {
+    display: block;
   }
-}
 
-@media (min-width: 992px) {
-  .modal-lg,
-  .modal-xl {
-    max-width: 800px;
-  }
-}
-@media (min-width: 576px) {
+
   .omy-dialog-backdrop {
-    max-width: 500px;
-    margin: 1.75rem auto;
-  }
-}
-
-.omy-dialog-content {
-  position: relative;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  width: 100%;
-  min-height: 560px;
-  pointer-events: auto;
-  background-color: #fff;
-  background-clip: padding-box;
-//   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.3rem;
-  outline: 0;
-  padding: 1rem;
-  background-color: #ccc;
-}
-
-.omy-dialog-header {
     position: relative;
-}
+    width: auto;
+    margin: 0.5rem;
+    pointer-events: none;
+  }
 
-.omy-dialog-logo {
+  .omy-dialog-open {
+    // Kill the scroll on the body
+    overflow: hidden;
+
+    .omy-dialog {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .modal-xl {
+      max-width: 1140px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .modal-lg,
+    .modal-xl {
+      max-width: 800px;
+    }
+  }
+  @media (min-width: 576px) {
+    .omy-dialog-backdrop {
+      max-width: 500px;
+      margin: 1.75rem auto;
+    }
+  }
+
+  .omy-dialog-content {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    min-height: 560px;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    //   border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+    padding: 1rem;
+    background-color: #f8f5f5;
+    color: #767070;
+  }
+
+  .omy-dialog-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .omy-dialog-logo {
     width: 140px;
-}
+  }
 
-.omy-dialog-title {
+  .omy-dialog-title {
     text-transform: uppercase;
-    color: #f6921e;
+    color: $green;
+    font-size: 1rem;
     padding: 0;
-    margin-bottom: 0;
+    margin: 0;
+    margin-right: 1rem;
+  }
 
-}
-
-.omy-dialog-close {
+  .omy-dialog-close {
     position: absolute;
-    top: 0;
-    right: 0;
-}
+    top: -7px;
+    right: -6px;
+  }
 
-.omy-dialog-body {
+  .omy-dialog-body {
     background: #fff;
     width: 100%;
     height: 100%;
     flex-grow: 1;
     border-radius: 0.3rem;
-}
+    overflow: auto;
+    max-height: 500px;
+    padding: 3rem;
+  }
 
-.omy-dialog-footer {
+  .omy-dialog-footer {
     padding-top: 1rem;
     position: relative;
     display: flex;
     justify-content: flex-end;
-}
+  }
 
-.omy-btn {
+  .omy-btn {
     border-radius: 0.7rem;
     box-shadow: none;
     border: none;
@@ -120,15 +135,71 @@
     cursor: pointer;
 
     &:focus {
-        outline: none;
+      outline: none;
     }
 
     &.omy-btn-orange {
-        background-color: #f6921e;
-        color: #fff;
+      background-color: #f6921e;
+      color: #fff;
     }
-}
 
-.omy-dialog.show {
-    display: block;
+    &.omy-dialog-close {
+      padding: 0.01rem 0.5rem;
+      text-align: center;
+      border-radius: 50%;
+      span {
+        font-size: 1.2rem;
+        color: #f6921e;
+      }
+    }
+  }
+  
+  //ACCEPT TERMS
+
+  .omy-onboard-accept-term {
+    
+    &__text {
+      strong {
+        text-transform: uppercase;
+      }
+      max-height: 300px;
+      overflow: auto;
+    }
+
+    &__checkbox {
+      display: block;
+      padding-top: 1rem;
+    }
+  }
+
+  //PERSONAL DATA STEP
+  .omy-onboard-step.omy-onboard-personal-data{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+  }
+  .omy-onboard-step {
+
+    .omy-onboard-step__form-group {
+      width: 100%;
+      margin-bottom: 1rem;
+      label {
+        font-weight: bold;
+        text-transform: uppercase;
+        display: block;
+        font-size: .8rem;
+        padding-bottom: 1rem;
+      }
+
+      input[type="text"], select {
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid #767070;
+        display: block;
+        width: 100%;
+        background: none;
+      }
+    }
+  }
 }

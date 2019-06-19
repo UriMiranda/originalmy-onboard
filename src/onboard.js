@@ -1,8 +1,6 @@
-require("html-loader?attrs=img:data-src!./index.html");
-import "./scss/styles.scss";
 import Emitter from "./emitter";
 import { extend, Cookies } from "./util";
-import { Step, AcceptTerms, Profile } from "./steps";
+import User from "./user";
 
 class OnBoard extends Emitter {
   static initClass() {
@@ -23,7 +21,7 @@ class OnBoard extends Emitter {
 
     this.prototype.defaultOptions = {
       // Plugin mode usage
-      mode: "staging",
+      mode: "production",
 
       // API Key
       api_key: null,
@@ -82,7 +80,7 @@ class OnBoard extends Emitter {
       this.element = document.querySelector(this.element);
     }
 
-    this.options = extend(
+    this.options = Dropzone.extend(
       {},
       this.defaultOptions,
       options != null ? options : {}
@@ -91,48 +89,25 @@ class OnBoard extends Emitter {
     if (this.options.api_key == null) {
       throw new Error("Warning! The api_key is missing");
     }
-    
-      // this.host =
-      //   this.options.mode == "production"
-      //     ? "https://api1.originalmy.com"
-      //     : "https://api1.testnet.originalmy.com";
+    if(NODE_ENV == 'production') {
+      this.host =
+        this.options.mode == "production"
+          ? "https://api1.originalmy.com"
+          : "https://api1.testnet.originalmy.com";
+    } else {
+      this.host = 'http://localhost:4000'
+    }
 
-      this.host = 'http://localhost:4001'
-
-    this.user = {
-      name: null,
-      email: null,
-      document_id: {
-        type: null,
-        document: null
-      },
-      telephone: null,
-      selfie: null,
-      document_photo: null,
-      document_photo_verse: null,
-      birthday: null,
-      wallet: null,
-      country: null
-    };
-
-    this.steps = {
-      'AcceptTerms' : AcceptTerms,
-      'Profile': Profile,
-    };
-
-    this.currentStep = new this.steps['AcceptTerms'];
-    this._title(this.currentStep.title());
-    this.currentStep.start();
-
+    this.user = new User;
     this.init();
   }
 
   init() {
     this.URL = window.URL !== null ? window.URL : window.webkitURL;
 
-    // Setup all event listeners on the OnBoard object itself.
+    // Setup all event listeners on the Dropzone object itself.
     // They're not in @setupEventListeners() because they shouldn't be removed
-    // again when the onboard gets disabled.
+    // again when the dropzone gets disabled.
     for (let eventName of this.events) {
       this.on(eventName, this.options[eventName]);
     }
@@ -154,7 +129,7 @@ class OnBoard extends Emitter {
     let method = "POST";
     xhr.open(method, this.options.host + infos.url, true);
 
-    // Setting the timeout after open because of IE11 issue: https://gitlab.com/meno/OnBoard/issues/8
+    // Setting the timeout after open because of IE11 issue: https://gitlab.com/meno/dropzone/issues/8
     xhr.timeout = this.resolveOption(this.options.timeout, infos);
 
     xhr.onload = e => {
@@ -231,7 +206,7 @@ class OnBoard extends Emitter {
   _finishedUploading(files, xhr, e) {
     let response;
 
-    if (files[0].status === OnBoard.CANCELED) {
+    if (files[0].status === Dropzone.CANCELED) {
       return;
     }
 
@@ -269,7 +244,7 @@ class OnBoard extends Emitter {
   }
 
   _handleUploadError(files, xhr, response) {
-    if (files[0].status === OnBoard.CANCELED) {
+    if (files[0].status === Dropzone.CANCELED) {
       return;
     }
 
@@ -303,10 +278,6 @@ class OnBoard extends Emitter {
 
   show() {
     return this.element.classList.add('show');
-  }
-
-  _title(title) {
-    document.querySelector('#omy-onboard-title').innerHTML = title;
   }
 }
 
@@ -342,39 +313,17 @@ OnBoard.dataURItoBlob = function(dataURI) {
   return new Blob([ab], { type: mimeString });
 };
 
-// OnBoard file status codes
-OnBoard.ADDED = "added";
-
-OnBoard.QUEUED = "queued";
-
-
-OnBoard.ACCEPTED = OnBoard.QUEUED;
-
-OnBoard.UPLOADING = "uploading";
-OnBoard.PROCESSING = OnBoard.UPLOADING; // alias
-
-OnBoard.CANCELED = "canceled";
-OnBoard.ERROR = "error";
-OnBoard.SUCCESS = "success";
-
-
 // Augment jQuery
 if (typeof jQuery !== "undefined" && jQuery !== null) {
   jQuery.fn.onboard = function(options) {
     return this.each(function() {
-      return new OnBoard(options);
+      return new OnBoard(this, options);
     });
   };
 }
 
-// if (typeof module !== "undefined" && module !== null) {
-//   module.exports = OnBoard;
-// } else {
+if (typeof module !== "undefined" && module !== null) {
+  module.exports = OnBoard;
+} else {
   window.OnBoard = OnBoard;
-// }
-
-const onboard = new OnBoard({
-  api_key: "TEST-DE-API"
-});
-
-onboard.show();
+}

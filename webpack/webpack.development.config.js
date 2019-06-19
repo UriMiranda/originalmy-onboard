@@ -18,6 +18,15 @@ module.exports = {
     filename: "[name].bundle.js",
     publicPath: '/'
   },
+  node: {
+    fs: 'empty'
+  },
+  resolve:
+  {
+    alias: {
+      'handlebars' : 'handlebars/dist/handlebars.js'
+    }
+  },
   module: {
     rules: [
       {
@@ -44,7 +53,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new HtmlWebpackPlugin({template: './src/index.html', inject: true}),
     new webpack.DefinePlugin({
       API_URL: JSON.stringify('http://localhost:4000'),
       EXPERIMENTAL_FEATURE: JSON.stringify(false)

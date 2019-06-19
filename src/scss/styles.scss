@@ -1,0 +1,134 @@
+.omy-dialog {
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+  }
+}
+.omy-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+//   display: block;
+    display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  transition: opacity 0.15s linear;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.omy-dialog-backdrop {
+  position: relative;
+  width: auto;
+  margin: 0.5rem;
+  pointer-events: none;
+}
+
+.omy-dialog-open {
+  // Kill the scroll on the body
+  overflow: hidden;
+
+  .omy-dialog {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 800px;
+  }
+}
+@media (min-width: 576px) {
+  .omy-dialog-backdrop {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+}
+
+.omy-dialog-content {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  min-height: 560px;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+//   border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+  padding: 1rem;
+  background-color: #ccc;
+}
+
+.omy-dialog-header {
+    position: relative;
+}
+
+.omy-dialog-logo {
+    width: 140px;
+}
+
+.omy-dialog-title {
+    text-transform: uppercase;
+    color: #f6921e;
+    padding: 0;
+    margin-bottom: 0;
+
+}
+
+.omy-dialog-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.omy-dialog-body {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    border-radius: 0.3rem;
+}
+
+.omy-dialog-footer {
+    padding-top: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.omy-btn {
+    border-radius: 0.7rem;
+    box-shadow: none;
+    border: none;
+    padding: 0.45rem 0.85rem;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.omy-btn-orange {
+        background-color: #f6921e;
+        color: #fff;
+    }
+}
+
+.omy-dialog.show {
+    display: block;
+}
